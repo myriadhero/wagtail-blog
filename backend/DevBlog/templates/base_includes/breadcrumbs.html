@@ -1,0 +1,12 @@
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    {% for p in page.get_ancestors %}
+      {% if not p.is_root %}
+        <li class="breadcrumb-item">
+          <a href="{{ p.url }}">{{ p.title }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    <li class="breadcrumb-item active" aria-current="page">{{ page.title }}</li>
+  </ol>
+</nav>

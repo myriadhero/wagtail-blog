@@ -1,0 +1,12 @@
+<h2>
+  {% if self.heading %}
+    {{ self.heading }}
+  {% else %}
+    Featured posts
+  {% endif %}
+</h2>
+<ul>
+  {% for feat_post in featured_posts %}
+    <li>{% include "blog/includes/featured_post_preview.html" %}</li>
+  {% endfor %}
+</ul>

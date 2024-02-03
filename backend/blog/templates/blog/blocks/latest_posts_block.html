@@ -1,0 +1,6 @@
+<h2>Latest posts</h2>
+<ul>
+  {% for post in latest_posts %}
+    <li>{% include "blog/includes/post_preview.html" %}</li>
+  {% endfor %}
+</ul>

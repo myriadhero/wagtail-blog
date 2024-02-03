@@ -7,8 +7,11 @@ name = "pypi"
 wagtail = "*"
 django = "*"
 wagtailcodeblock = "*"
+wagtailmenus = "*"
+wagtail-modeladmin = "*"
 
 [dev-packages]
+ipython = "*"
 
 [requires]
 python_version = "3.12"

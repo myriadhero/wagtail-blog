@@ -1,0 +1,77 @@
+:root {
+  --twinkle-duration: 30s;
+}
+body {
+  position: relative;
+}
+
+.starry-sky {
+  background: linear-gradient(
+    to bottom,
+    #000000 0%,
+    #01132e 60%,
+    #00172f 75%,
+    #000f2f 76%,
+    #000 100%
+  );
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: -999;
+}
+
+@-webkit-keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+}
+
+.star {
+  fill: white;
+  -webkit-animation: twinkle var(--twinkle-duration) ease-in-out infinite;
+  animation: twinkle var(--twinkle-duration) ease-in-out infinite;
+}
+
+.star:nth-child(even) {
+  -webkit-animation-delay: calc(var(--twinkle-duration) * -0.33);
+  animation-delay: calc(var(--twinkle-duration) * -0.33);
+}
+.star:nth-child(3n) {
+  opacity: 0.8;
+  -webkit-animation-delay: calc(var(--twinkle-duration) * -0.66);
+  animation-delay: calc(var(--twinkle-duration) * -0.66);
+}
+.star:nth-child(7n) {
+  opacity: 0.6;
+  -webkit-animation-delay: calc((var(--twinkle-duration) + 15) * -0.7);
+  animation-delay: calc((var(--twinkle-duration) + 15) * -0.7);
+}
+.star:nth-child(13n) {
+  opacity: 0.4;
+  -webkit-animation-delay: calc((var(--twinkle-duration) - 10) * -0.5);
+  animation-delay: calc((var(--twinkle-duration) - 10) * -0.5);
+}
+.star:nth-child(19n) {
+  opacity: 0.2;
+  -webkit-animation-delay: calc((var(--twinkle-duration) + 10) * -0.4);
+  animation-delay: calc((var(--twinkle-duration) + 10) * -0.4);
+}
+
+.container {
+  background: rgba(0, 0, 0, 0.5);
+}

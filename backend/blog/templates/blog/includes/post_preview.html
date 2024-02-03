@@ -1,0 +1,8 @@
+<a href="{{ post.url }}">
+  <h3>{{ post.title }}</h3>
+</a>
+<p>Published: {{ post.last_published_at |date:"SHORT_DATE_FORMAT" }}</p>
+<div>
+  {% load wagtailcore_tags %}
+  <span>preview img or post img</span><span>{{ post.intro|richtext }}</span>
+</div>

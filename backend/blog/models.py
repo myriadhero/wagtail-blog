@@ -1,5 +1,4 @@
 from django.db import models
-from home.models import HomePage
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from taggit.models import ItemBase, TagBase
@@ -41,7 +40,13 @@ class CategoryPage(Page):
         InlinePanel("featured", label="Featured Posts"),
     )
 
-    parent_page_types = (HomePage, "CategoryPage")
+    parent_page_types = ("home.HomePage", "CategoryPage")
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["child_post_pages"] = self.get_descendants().live().type(PostPage).specific()
+        context["child_category_pages"] = self.get_descendants().live().type(CategoryPage).specific()
+        return context
 
 
 class PostPage(Page):
@@ -74,6 +79,11 @@ class PostPage(Page):
     parent_page_types = (CategoryPage,)
 
 
+class LiveFeaturedPosts(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(post__live=True)
+
+
 class FeaturedPost(Orderable):
     category = ParentalKey(CategoryPage, on_delete=models.CASCADE, related_name="featured")
     post = models.ForeignKey(PostPage, on_delete=models.CASCADE, related_name="+")
@@ -85,6 +95,9 @@ class FeaturedPost(Orderable):
         related_name="+",
         help_text="This image can be different from any images in the post.",
     )
+
+    live = LiveFeaturedPosts()
+
     panels = (
         FieldPanel("post"),
         FieldPanel("preview_image"),
