@@ -12,3 +12,6 @@ wagtailcodeblock = "*"
 
 [requires]
 python_version = "3.12"
+
+[scripts]
+wagtail = "python backend/manage.py runserver 0.0.0.0:80"
