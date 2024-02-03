@@ -1,0 +1,23 @@
+.vscode/
+*.pyc
+.DS_Store
+package-lock.json
+dockertest/*
+tutorial1poll/*
+*.sqlite3
+/backend/logs
+backend/media/*
+/frontend/node_modules
+raw-data*.json
+.env
+.env.*
+*.crt
+*.key
+/nginx/*.conf
+*.save
+*.log
+*.sql
+/backend/staticfiles/
+
+# sample env file
+!example_settings/*
