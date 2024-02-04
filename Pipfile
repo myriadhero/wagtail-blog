@@ -10,6 +10,8 @@ wagtailcodeblock = "*"
 wagtailmenus = "*"
 wagtail-modeladmin = "*"
 django-environ = "*"
+psycopg = {extras = ["binary"], version = "*"}
+gunicorn = "*"
 
 [dev-packages]
 ipython = "*"

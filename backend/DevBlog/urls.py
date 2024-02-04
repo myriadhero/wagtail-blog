@@ -6,7 +6,7 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 
 urlpatterns = [
-    path(settings.DJANGO_ADMIN_PATH, admin.site.urls),
+    path(settings.ADMIN_PATH, admin.site.urls),
     path(settings.WAGTAIL_ADMIN_PATH, include(wagtailadmin_urls)),
     path("search/", search_views.search, name="search"),
 ]

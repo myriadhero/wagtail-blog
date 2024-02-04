@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 from pathlib import Path
 
 import environ
@@ -23,20 +24,25 @@ env = environ.Env(
         str,
         "django-insecure-w1=ulwq^^v-j^lz!*!oos%!3!aorqr-o0pv*xqbuk2ulbd+s)x",
     ),
-    STATICFILES_ROOT_DIR=(Path, BASE_DIR / "staticfiles"),
-    MEDIA_ROOT_DIR=(Path, BASE_DIR / "media"),
+    STATICFILES_DIR=(Path, BASE_DIR / "staticfiles"),
+    MEDIAFILES_DIR=(Path, BASE_DIR / "media"),
+    LOGS_DIR=(Path, BASE_DIR / "logs"),
     DJANGO_ALLOWED_HOSTS=(tuple, ("localhost", "127.0.0.1")),
+    POSTGRES_DB_HOST=(str, "localhost"),
     POSTGRES_DB_PORT=(int, 5432),
+    POSTGRES_DB_NAME=(str, "devblogdb"),
+    POSTGRES_DB_USER=(str, "postgres"),
+    # POSTGRES_DB_PASSWORD=(str, ""),
     DJANGO_ADMIN_PATH=(str, "admin"),
     WAGTAIL_ADMIN_PATH=(str, "cms"),
     WAGTAILADMIN_BASE_URL=(str, "http://example.com"),
     WAGTAIL_SITE_NAME=(str, "DevBlog"),
-    LOGS_DIR=(Path, BASE_DIR / "logs"),
+    DJANGO_TIME_ZONE=(str, "Australia/Sydney"),
 )
 
-SECRET_KEY = env.str("DJANGO_SECRET_KEY")
-DEBUG = env.bool("DJANGO_DEBUG")
-ALLOWED_HOSTS = env.tuple("DJANGO_ALLOWED_HOSTS")
+SECRET_KEY = env("DJANGO_SECRET_KEY")
+DEBUG = env("DJANGO_DEBUG")
+ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS")
 
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
@@ -127,18 +133,18 @@ WSGI_APPLICATION = "DevBlog.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": BASE_DIR / "db.sqlite3",
-    # },
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "HOST": env.db_url("POSTGRES_DB_HOST"),
-        "PORT": env.int("POSTGRES_DB_PORT"),
-        "NAME": env.str("POSTGRES_DB_NAME"),
-        "USER": env.str("POSTGRES_DB_USER"),
-        "PASSWORD": env.str("POSTGRES_DB_PASSWORD"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     },
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "HOST": env("POSTGRES_DB_HOST"),
+    #     "PORT": env("POSTGRES_DB_PORT"),
+    #     "NAME": env("POSTGRES_DB_NAME"),
+    #     "USER": env("POSTGRES_DB_USER"),
+    #     "PASSWORD": env("POSTGRES_DB_PASSWORD"),
+    # },
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
@@ -166,12 +172,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = "en-au"
-TIME_ZONE = "Australia/Sydney"
+TIME_ZONE = env("DJANGO_TIME_ZONE")
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+APPEND_SLASH = True
+WAGTAIL_APPEND_SLASH = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -194,18 +202,18 @@ STATICFILES_STORAGE = (
     else "django.contrib.staticfiles.storage.StaticFilesStorage"
 )
 
-STATIC_ROOT = env.path("STATICFILES_ROOT_DIR")
+STATIC_ROOT = env("STATICFILES_DIR")
 STATIC_URL = "/static/"
 
-MEDIA_ROOT = env.path("MEDIA_ROOT_DIR")
+MEDIA_ROOT = env("MEDIAFILES_DIR")
 MEDIA_URL = "/media/"
 
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = env.str("WAGTAIL_SITE_NAME")
-WAGTAILADMIN_BASE_URL = env.str("WAGTAILADMIN_BASE_URL")
-WAGTAIL_ADMIN_PATH = env.str("WAGTAIL_ADMIN_URL")
+WAGTAIL_SITE_NAME = env("WAGTAIL_SITE_NAME")
+WAGTAILADMIN_BASE_URL = env("WAGTAILADMIN_BASE_URL")
+WAGTAIL_ADMIN_PATH = env("WAGTAIL_ADMIN_PATH")
 WAGTAIL_CODE_BLOCK_THEME = "okaidia"
 
 # Search
@@ -216,8 +224,8 @@ WAGTAILSEARCH_BACKENDS = {
     },
 }
 
-ADMIN_PATH = env.str("DJANGO_ADMIN_PATH")
-LOGS_DIR = env.path("LOGS_DIR")
+ADMIN_PATH = env("DJANGO_ADMIN_PATH")
+LOGS_DIR = env("LOGS_DIR")
 if not DEBUG:
     LOGGING = {
         "version": 1,

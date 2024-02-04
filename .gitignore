@@ -13,7 +13,7 @@ raw-data*.json
 .env.*
 *.crt
 *.key
-/nginx/*.conf
+/nginx/*cert*
 *.save
 *.log
 *.sql

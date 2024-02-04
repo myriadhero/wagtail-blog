@@ -12,17 +12,17 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-  db:
-    restart: always
-    image: postgres:latest
-    environment:
-      - POSTGRES_USER=${POSTGRES_DB_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB_NAME}
-    profiles:
-      - prod
-    volumes:
-      - db-data:/var/lib/postgresql/data
+  # db:
+  #   restart: always
+  #   image: postgres:latest
+  #   environment:
+  #     - POSTGRES_USER=${POSTGRES_DB_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD}
+  #     - POSTGRES_DB=${POSTGRES_DB_NAME}
+  #   profiles:
+  #     - prod
+  #   volumes:
+  #     - db-data:/var/lib/postgresql/data
   web:
     restart: always
     build:
@@ -32,30 +32,33 @@ services:
       - static_volume:${DOCKER_CODE_DIR}/staticfiles
       - media_volume:${DOCKER_CODE_DIR}/mediafiles
       - django_logs:${DOCKER_CODE_DIR}/logs
-    depends_on:
-      - db
-    command: gunicorn blogsite.wsgi:application --bind 0.0.0.0:8000
+    # depends_on:
+    #   - db
+    command: gunicorn DevBlog.wsgi:application --bind 0.0.0.0:8000
     # command: tail -f /dev/null
     env_file:
       - .env
     profiles:
       - prod
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--spider",
-          "-q",
-          "http://localhost:8000/healthcheck/"
-        ]
-      interval: 5m
-      start_period: 2m
+    # healthcheck:
+    #   test:
+    #     [
+    #       "CMD",
+    #       "wget",
+    #       "--spider",
+    #       "-q",
+    #       "http://localhost:8000/healthcheck/"
+    #     ]
+    #   interval: 5m
+    #   start_period: 2m
   nginx:
     restart: always
-    build: ./nginx
+    build: 
+      context: ./nginx
+      args:
+        - HOSTNAME=${HOSTNAME}
     ports:
-      - 8080:8080
+      - ${HOST_PORT}:8080
     depends_on:
       - web
     volumes:
