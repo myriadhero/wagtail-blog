@@ -1,3 +1,6 @@
+compose.yml
+Dockerfile
+
 # Django project
 /media/
 /static/

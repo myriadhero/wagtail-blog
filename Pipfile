@@ -9,6 +9,7 @@ django = "*"
 wagtailcodeblock = "*"
 wagtailmenus = "*"
 wagtail-modeladmin = "*"
+django-environ = "*"
 
 [dev-packages]
 ipython = "*"

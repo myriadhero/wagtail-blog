@@ -9,13 +9,47 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
 from pathlib import Path
+
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = PROJECT_DIR.parent
 
+env = environ.Env(
+    DJANGO_DEBUG=(bool, False),
+    DJANGO_SECRET_KEY=(
+        str,
+        "django-insecure-w1=ulwq^^v-j^lz!*!oos%!3!aorqr-o0pv*xqbuk2ulbd+s)x",
+    ),
+    STATICFILES_ROOT_DIR=(Path, BASE_DIR / "staticfiles"),
+    MEDIA_ROOT_DIR=(Path, BASE_DIR / "media"),
+    DJANGO_ALLOWED_HOSTS=(tuple, ("localhost", "127.0.0.1")),
+    POSTGRES_DB_PORT=(int, 5432),
+    DJANGO_ADMIN_PATH=(str, "admin"),
+    WAGTAIL_ADMIN_PATH=(str, "cms"),
+    WAGTAILADMIN_BASE_URL=(str, "http://example.com"),
+    WAGTAIL_SITE_NAME=(str, "DevBlog"),
+    LOGS_DIR=(Path, BASE_DIR / "logs"),
+)
+
+SECRET_KEY = env.str("DJANGO_SECRET_KEY")
+DEBUG = env.bool("DJANGO_DEBUG")
+ALLOWED_HOSTS = env.tuple("DJANGO_ALLOWED_HOSTS")
+
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+if DEBUG:
+    INTERNAL_IPS = [
+        "localhost",
+        "127.0.0.1",
+    ]
+
+SITE_ID = 1
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -93,12 +127,21 @@ WSGI_APPLICATION = "DevBlog.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "db.sqlite3",
+    # },
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": env.db_url("POSTGRES_DB_HOST"),
+        "PORT": env.int("POSTGRES_DB_PORT"),
+        "NAME": env.str("POSTGRES_DB_NAME"),
+        "USER": env.str("POSTGRES_DB_USER"),
+        "PASSWORD": env.str("POSTGRES_DB_PASSWORD"),
     },
 }
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -123,7 +166,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = "en-au"
-TIME_ZONE = "UTC"
+TIME_ZONE = "Australia/Sydney"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -145,18 +188,25 @@ STATICFILES_DIRS = [
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
 # JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/5.0/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+STATICFILES_STORAGE = (
+    "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+    if not DEBUG
+    else "django.contrib.staticfiles.storage.StaticFilesStorage"
+)
 
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = env.path("STATICFILES_ROOT_DIR")
 STATIC_URL = "/static/"
 
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = env.path("MEDIA_ROOT_DIR")
 MEDIA_URL = "/media/"
 
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "DevBlog"
+WAGTAIL_SITE_NAME = env.str("WAGTAIL_SITE_NAME")
+WAGTAILADMIN_BASE_URL = env.str("WAGTAILADMIN_BASE_URL")
+WAGTAIL_ADMIN_PATH = env.str("WAGTAIL_ADMIN_URL")
+WAGTAIL_CODE_BLOCK_THEME = "okaidia"
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
@@ -166,8 +216,27 @@ WAGTAILSEARCH_BACKENDS = {
     },
 }
 
-# Base URL to use when referring to full URLs within the Wagtail admin backend -
-# e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = "http://example.com"
-
-WAGTAIL_CODE_BLOCK_THEME = "okaidia"
+ADMIN_PATH = env.str("DJANGO_ADMIN_PATH")
+LOGS_DIR = env.path("LOGS_DIR")
+if not DEBUG:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+            },
+            "file": {
+                "level": "INFO",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": LOGS_DIR / "django.log",
+                "maxBytes": 1024 * 1024 * 5,  # 5MB
+                "backupCount": 5,  # 5 total files
+                # "formatter": "verbose",
+            },
+        },
+        "root": {
+            "handlers": ["file"],
+            "level": "INFO",
+        },
+    }
