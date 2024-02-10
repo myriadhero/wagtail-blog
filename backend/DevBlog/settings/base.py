@@ -32,7 +32,6 @@ env = environ.Env(
     POSTGRES_DB_PORT=(int, 5432),
     POSTGRES_DB_NAME=(str, "devblogdb"),
     POSTGRES_DB_USER=(str, "postgres"),
-    # POSTGRES_DB_PASSWORD=(str, ""),
     DJANGO_ADMIN_PATH=(str, "admin"),
     WAGTAIL_ADMIN_PATH=(str, "cms"),
     WAGTAILADMIN_BASE_URL=(str, "http://example.com"),
@@ -133,18 +132,18 @@ WSGI_APPLICATION = "DevBlog.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },
     # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "HOST": env("POSTGRES_DB_HOST"),
-    #     "PORT": env("POSTGRES_DB_PORT"),
-    #     "NAME": env("POSTGRES_DB_NAME"),
-    #     "USER": env("POSTGRES_DB_USER"),
-    #     "PASSWORD": env("POSTGRES_DB_PASSWORD"),
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "db.sqlite3",
     # },
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": env("POSTGRES_DB_HOST"),
+        "PORT": env("POSTGRES_DB_PORT"),
+        "NAME": env("POSTGRES_DB_NAME"),
+        "USER": env("POSTGRES_DB_USER"),
+        "PASSWORD": env("POSTGRES_DB_PASSWORD"),
+    },
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

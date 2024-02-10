@@ -12,17 +12,17 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-  # db:
-  #   restart: always
-  #   image: postgres:latest
-  #   environment:
-  #     - POSTGRES_USER=${POSTGRES_DB_USER}
-  #     - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD}
-  #     - POSTGRES_DB=${POSTGRES_DB_NAME}
-  #   profiles:
-  #     - prod
-  #   volumes:
-  #     - db-data:/var/lib/postgresql/data
+  db:
+    restart: always
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_DB_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB_NAME}
+    profiles:
+      - prod
+    volumes:
+      - db-data:/var/lib/postgresql/data
   web:
     restart: always
     build:
@@ -32,8 +32,8 @@ services:
       - static_volume:${DOCKER_CODE_DIR}/staticfiles
       - media_volume:${DOCKER_CODE_DIR}/mediafiles
       - django_logs:${DOCKER_CODE_DIR}/logs
-    # depends_on:
-    #   - db
+    depends_on:
+      - db
     command: gunicorn DevBlog.wsgi:application --bind 0.0.0.0:8000
     # command: tail -f /dev/null
     env_file:
@@ -56,7 +56,7 @@ services:
     build: 
       context: ./nginx
       args:
-        - HOSTNAME=${HOSTNAME}
+        - HOSTNAME=${DJ_NGINX_HOSTNAME}
     ports:
       - ${HOST_PORT}:8080
     depends_on:
