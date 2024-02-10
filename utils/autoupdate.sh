@@ -4,7 +4,7 @@
 
 git remote update
 
-if git status -uno | grep "Your branch is behind"; then
+if git status -uno | grep "Your branch is behind 'origin/main'"; then
     # 1. pull the new version
     git pull
 
