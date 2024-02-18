@@ -43,9 +43,9 @@
         <div class="container pb-5">
           <h3>
             {% if settings.home.SiteIdentity.site_title %}
-              - {{ settings.home.SiteIdentity.site_title }}
+              {{ settings.home.SiteIdentity.site_title }}
             {% elif current_site and current_site.site_name %}
-              - {{ current_site.site_name }}
+              {{ current_site.site_name }}
             {% endif %}
           </h3>
           {% load menu_tags %}

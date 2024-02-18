@@ -2,18 +2,19 @@
 {% load wagtailcore_tags %}
 {% block content %}
   <h1>{{ page.title }}</h1>
-  <div>{{ page.description }}</div>
+  {% if page.description %}<div>{{ page.description|richtext }}</div>{% endif %}
   {% if page.featured.exists %}
     <div>
-      <h2>Featured posts</h2>
+      <h4>Featured posts</h4>
       {% for feat_post in page.featured.all %}
         {% include "blog/includes/featured_post_preview.html" %}
       {% endfor %}
     </div>
+    <br>
   {% endif %}
   {% if child_category_pages.exists %}
     <div>
-      <h2>Categories</h2>
+      <h4>Categories</h4>
       <ul>
         {% for cat in child_category_pages.all %}
           <li>
@@ -22,11 +23,16 @@
         {% endfor %}
       </ul>
     </div>
+    <br>
   {% endif %}
-  <div>
-    <h2>Latest posts</h2>
-    {% for post in child_post_pages.all %}
-      {% include "blog/includes/post_preview.html" %}
-    {% endfor %}
-  </div>
+  {% if child_post_pages.exists %}
+    <div>
+      <h4>Latest posts</h4>
+      {% for post in child_post_pages.all %}
+        {% include "blog/includes/post_preview.html" %}
+      {% endfor %}
+    </div>
+  {% elif %}
+    <p>No posts found</p>
+  {% endif %}
 {% endblock content %}
