@@ -26,6 +26,7 @@ class HomePage(Page):
 @register_setting
 class SiteIdentity(BaseGenericSetting):
     site_title = models.CharField(max_length=100)
+    tag_line = models.CharField(max_length=250, blank=True)
     title_logo = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
