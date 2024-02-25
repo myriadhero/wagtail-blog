@@ -9,15 +9,5 @@ if git status -uno | grep "Your branch is behind 'origin/main'"; then
     git pull
 
     # 2. build new docker containers
-    docker compose --profile prod build
-
-    # 3. restart the containers
-    docker compose --profile prod up -d
-
-    # 4. run migrate and collectstatic commands
-    docker compose --profile prod exec web python manage.py migrate --noinput
-    docker compose --profile prod exec web python manage.py collectstatic --noinput
-
-    # 5. restart the web container
-    docker compose --profile prod restart web
+    sh ./utils/dockerrebuild.sh
 fi
