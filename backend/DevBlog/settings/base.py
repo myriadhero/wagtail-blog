@@ -29,7 +29,7 @@ env = environ.Env(
     MEDIAFILES_DIR=(Path, BASE_DIR / "media"),
     LOGS_DIR=(Path, BASE_DIR / "logs"),
     DJANGO_ALLOWED_HOSTS=(tuple, ("localhost", "127.0.0.1")),
-    DJANGO_URL_PREFIX=(str, ""),
+    DJANGO_URL_PREFIX=(str, None),
     POSTGRES_DB_HOST=(str, "localhost"),
     POSTGRES_DB_PORT=(int, 5432),
     POSTGRES_DB_NAME=(str, "devblogdb"),
@@ -212,10 +212,10 @@ STATICFILES_STORAGE = (
 )
 
 STATIC_ROOT = env("STATICFILES_DIR")
-STATIC_URL = FORCE_SCRIPT_NAME + "/static/"
+STATIC_URL = f"{FORCE_SCRIPT_NAME or ''}/static/"
 
 MEDIA_ROOT = env("MEDIAFILES_DIR")
-MEDIA_URL = FORCE_SCRIPT_NAME + "/media/"
+MEDIA_URL = f"{FORCE_SCRIPT_NAME or ''}/media/"
 
 
 # Wagtail settings
