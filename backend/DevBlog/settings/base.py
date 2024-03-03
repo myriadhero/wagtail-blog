@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from importlib.util import find_spec
 from pathlib import Path
 
 import environ
@@ -28,6 +29,7 @@ env = environ.Env(
     MEDIAFILES_DIR=(Path, BASE_DIR / "media"),
     LOGS_DIR=(Path, BASE_DIR / "logs"),
     DJANGO_ALLOWED_HOSTS=(tuple, ("localhost", "127.0.0.1")),
+    DJANGO_URL_PREFIX=(str, ""),
     POSTGRES_DB_HOST=(str, "localhost"),
     POSTGRES_DB_PORT=(int, 5432),
     POSTGRES_DB_NAME=(str, "devblogdb"),
@@ -42,6 +44,7 @@ env = environ.Env(
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 DEBUG = env("DJANGO_DEBUG")
 ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS")
+FORCE_SCRIPT_NAME = env("DJANGO_URL_PREFIX")
 
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
@@ -58,7 +61,6 @@ SITE_ID = 1
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
 
 # Application definition
 
@@ -91,6 +93,12 @@ INSTALLED_APPS = [
     # local custom
     "blog.apps.BlogConfig",
 ]
+if DEBUG and find_spec("debug_toolbar"):
+    INSTALLED_APPS.append("debug_toolbar")
+    import mimetypes
+
+    mimetypes.add_type("application/javascript", ".js", True)
+
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -102,6 +110,8 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
+if DEBUG:
+    MIDDLEWARE.insert(3, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 ROOT_URLCONF = "DevBlog.urls"
 
@@ -202,10 +212,10 @@ STATICFILES_STORAGE = (
 )
 
 STATIC_ROOT = env("STATICFILES_DIR")
-STATIC_URL = "/static/"
+STATIC_URL = FORCE_SCRIPT_NAME + "/static/"
 
 MEDIA_ROOT = env("MEDIAFILES_DIR")
-MEDIA_URL = "/media/"
+MEDIA_URL = FORCE_SCRIPT_NAME + "/media/"
 
 
 # Wagtail settings
