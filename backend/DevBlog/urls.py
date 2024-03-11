@@ -9,6 +9,7 @@ urlpatterns = [
     path(settings.ADMIN_PATH, admin.site.urls),
     path(settings.WAGTAIL_ADMIN_PATH, include(wagtailadmin_urls)),
     path("search/", search_views.search, name="search"),
+    path("weekly_stars/", include("weekly_stars.urls"), name="weekly_stars"),
 ]
 
 

@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # local custom
     "blog.apps.BlogConfig",
+    "weekly_stars.apps.WeeklyStarsConfig",
 ]
 if DEBUG and find_spec("debug_toolbar"):
     INSTALLED_APPS.append("debug_toolbar")

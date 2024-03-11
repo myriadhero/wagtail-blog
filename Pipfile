@@ -16,6 +16,7 @@ gunicorn = "*"
 [dev-packages]
 ipython = "*"
 django-debug-toolbar = "*"
+djlint = "*"
 
 [requires]
 python_version = "3.12"

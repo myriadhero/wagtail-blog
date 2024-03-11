@@ -1,0 +1,14 @@
+{% comment %} 
+Single element form to create new rows in the table
+<tr>
+    <td>Goal (text)</td>
+    <td>Complexity (choice)</td>
+    <td>Frequency (text)</td>
+    <td><button type="submit"></button></td>
+</tr>
+{% endcomment %}
+
+<form action="{% url "weekly_stars:goal_new" %}" method="post">
+    {% csrf_token %}
+
+</form>
