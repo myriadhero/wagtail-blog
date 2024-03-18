@@ -1,14 +1,33 @@
-{% comment %} 
-Single element form to create new rows in the table
 <tr>
-    <td>Goal (text)</td>
-    <td>Complexity (choice)</td>
-    <td>Frequency (text)</td>
-    <td><button type="submit"></button></td>
+    <td>
+        <form hx-post="{% url "weekly_stars:goal_new" %}"
+              id="new_goal"
+              hx-target="closest tr"
+              hx-swap="beforebegin"
+              hx-on::after-request="if(event.detail.successful) this.reset();">
+            {% csrf_token %}
+            <button class="btn btn-outline-primary" form="new_goal">Add New</button>
+        </td>
+    </form>
+    <td>
+        <input type="text"
+               placeholder="Goal name"
+               form="new_goal"
+               class="form-control"
+               name="name">
+    </td>
+    <td>
+        <select form="new_goal" class="form-select" name="complexity">
+            <option value="R">Rabbit</option>
+            <option value="E">Elephant</option>
+            <option value="D">Deadline</option>
+        </select>
+    </td>
+    <td>
+        <input type="text"
+               placeholder="How often?"
+               form="new_goal"
+               class="form-control"
+               name="frequency">
+    </td>
 </tr>
-{% endcomment %}
-
-<form action="{% url "weekly_stars:goal_new" %}" method="post">
-    {% csrf_token %}
-
-</form>

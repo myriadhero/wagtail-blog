@@ -33,8 +33,12 @@
           type="text/css"
           href="{% static 'css/DevBlog.css' %}">
     {% block extra_css %}{# Override this in templates to add extra stylesheets #}{% endblock %}
+    <script src="https://unpkg.com/htmx.org@1.9.11"
+            integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0"
+            crossorigin="anonymous"></script>
   </head>
-  <body class="{% block body_class %}{% endblock body_class %}">
+  <body class="{% block body_class %}{% endblock body_class %}"
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include "base_includes/starry_background.html" %}
     <div class="py-2"></div>
     {% wagtailuserbar %}

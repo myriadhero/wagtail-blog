@@ -1,0 +1,6 @@
+{% with cdate=completion.0 completed=completion.1 %}
+    <span class="star-outline {% if completed %}star-filled{% endif %}"
+          {% if completed %} hx-delete="{% url "weekly_stars:toggle_completion" goal.id cdate.year cdate.month cdate.day %}" {% else %} hx-post="{% url "weekly_stars:toggle_completion" goal.id cdate.year cdate.month cdate.day %}" {% endif %}
+          hx-swap="outerHTML"
+          hx-target="this"></span>
+{% endwith %}

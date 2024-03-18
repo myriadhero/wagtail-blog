@@ -1,210 +1,30 @@
 {% extends "base.html" %}
-
 {% block content %}
-<table>
-  <thead>
-    <tr>
-      <th>Repeatable</th>
-      <th>Rabbit/Elephant</th>
-      <th>Frequency</th>
-      <th>Monday</th>
-      <th>Tuesday</th>
-      <th>Wednesday</th>
-      <th>Thursday</th>
-      <th>Friday</th>
-      <th>Saturday</th>
-      <th>Sunday</th>
-    </tr>
-  </thead>
-  {% comment %} I want to have the ability to add rows {% endcomment %}
-  <tbody>
-    
-  </tbody>
-  <tr>
-    <td>Food Prep</td>
-    <td>r</td>
-    <td>5/week morning</td>
-
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Khan Academy</td>
-    <td>r</td>
-    <td>Daily 30min, except Systems days optional</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Systems/Signals</td>
-    <td>e</td>
-    <td>2/week x1hr</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Brain Training</td>
-    <td>e</td>
-    <td>Daily, 30min</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Coding/Business</td>
-    <td>e</td>
-    <td>Daily 1hr</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Exercise</td>
-    <td>r</td>
-    <td>Daily ~30min</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Finish work by 5</td>
-    <td>e deadline planning</td>
-    <td>Workdays</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Work Tix</td>
-    <td>e</td>
-    <td>Workdays 2hrs</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Work KCS</td>
-    <td>e</td>
-    <td>Workdays 30min</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Work SMU</td>
-    <td>e</td>
-    <td>Workdays 30min</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Sleep by 10</td>
-    <td>e deadline planning</td>
-    <td>Daily</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Meditation</td>
-    <td>r</td>
-    <td>Daily, 10min, optional</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Active Recovery</td>
-    <td>r</td>
-    <td>Daily, 1hr, instad of browsing</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-  <tr>
-    <td>Cleaning</td>
-    <td>r</td>
-    <td>3/week x30min</td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-    <td><span class="star-outline"></span></td>
-  </tr>
-</table>
-
-<script>
-  function toggleStar(element) {
-    element.classList.toggle("star-filled");
-  }
-
-  document.querySelectorAll(".star-outline").forEach(function (element) {
-    element.addEventListener("click", function () {
-      toggleStar(element);
-    });
-  });
-</script>
-<style>
+  <table class="table-hover">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Repeatable</th>
+        <th>Rabbit/Elephant</th>
+        <th>Frequency</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>Sunday</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for goal, completions in goals_with_completions.items %}
+        <tr>{% include "weekly_stars/goal_row.html" %}</tr>
+      {% endfor %}
+      {% include "weekly_stars/table_entry_form.html" %}
+    </tbody>
+  </table>
+  <style>
   .star-outline {
-    color: #000;
     font-size: 1.5em;
     cursor: pointer;
   }
@@ -214,5 +34,14 @@
   .star-outline.star-filled::before {
     content: "⭐️";
   }
-</style>
+  td, th{
+    padding: 0.5em;
+  }
+  table.table-hover tr:hover{
+    background-color: #0071d02b;
+  }
+  .btn {
+    white-space: nowrap;
+  }
+  </style>
 {% endblock content %}
