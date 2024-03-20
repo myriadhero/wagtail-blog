@@ -24,6 +24,7 @@ class WeeklyStarsView(TemplateView):
         # TODO: Instead of relative weeks, consider using week numbers from the start of the year
         week = self.request.GET.get("week", 0)
         today = date.today()
+        context["today"] = today
         start_of_week = today - timedelta(days=today.weekday() + (7 * int(week)))
         end_of_week = start_of_week + timedelta(days=6)
 

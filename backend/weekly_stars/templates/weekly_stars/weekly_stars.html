@@ -2,27 +2,52 @@
 {% block content %}
   <table class="table-hover">
     <thead>
-      <tr>
+      <tr id="table-header-row">
         <th></th>
         <th>Repeatable</th>
         <th>Rabbit/Elephant</th>
         <th>Frequency</th>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-        <th>Saturday</th>
-        <th>Sunday</th>
+        <th {% if today.weekday == 0 %}class="is-today"{% endif %}>Monday</th>
+        <th {% if today.weekday == 1 %}class="is-today"{% endif %}>Tuesday</th>
+        <th {% if today.weekday == 2 %}class="is-today"{% endif %}>Wednesday</th>
+        <th {% if today.weekday == 3 %}class="is-today"{% endif %}>Thursday</th>
+        <th {% if today.weekday == 4 %}class="is-today"{% endif %}>Friday</th>
+        <th {% if today.weekday == 5 %}class="is-today"{% endif %}>Saturday</th>
+        <th {% if today.weekday == 6 %}class="is-today"{% endif %}>Sunday</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="table-body">
       {% for goal, completions in goals_with_completions.items %}
-        <tr>{% include "weekly_stars/goal_row.html" %}</tr>
+        {% include "weekly_stars/goal_row.html" %}
       {% endfor %}
       {% include "weekly_stars/table_entry_form.html" %}
     </tbody>
   </table>
+  <script>
+    // i want to get the column number of the current day as per the is-today class
+    const tableHeaderRow = document.getElementById("table-header-row");
+    // i don't anticipate this to change as the table is not dynamically polling backend
+    const todayColNum = Array.from(tableHeaderRow.children).findIndex((th) => th.classList.contains("is-today"));
+    
+    // then i want to sort the rows by the value of that column
+    const tableBody = document.getElementById("table-body");
+    // the table rows may change over time as there's ability to add and delete entries
+
+    function sortBodyRows(){
+      const rows = Array.from(tableBody.children);
+      const lastRow = rows.pop();
+      rows.sort((row1, row2) => {
+        const value1 = row1?.children[todayColNum]?.querySelector(".star-filled") ? 1 : 0;
+        const value2 = row2?.children[todayColNum]?.querySelector(".star-filled") ? 1 : 0;
+        return value1 - value2;
+      });
+      rows.push(lastRow);
+      rows.forEach((row) => tableBody.appendChild(row));
+    }
+    
+    htmx.onLoad(sortBodyRows);
+  
+  </script>
   <style>
   .star-outline {
     font-size: 1.5em;
@@ -39,6 +64,9 @@
   }
   table.table-hover tr:hover{
     background-color: #0071d02b;
+  }
+  tbody tr{
+    transition: translate 0.5s ease-in-out;
   }
   .btn {
     white-space: nowrap;
