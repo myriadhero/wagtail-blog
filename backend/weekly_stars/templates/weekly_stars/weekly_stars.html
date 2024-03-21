@@ -7,13 +7,9 @@
         <th>Repeatable</th>
         <th>Rabbit/Elephant</th>
         <th>Frequency</th>
-        <th {% if today.weekday == 0 %}class="is-today"{% endif %}>Monday</th>
-        <th {% if today.weekday == 1 %}class="is-today"{% endif %}>Tuesday</th>
-        <th {% if today.weekday == 2 %}class="is-today"{% endif %}>Wednesday</th>
-        <th {% if today.weekday == 3 %}class="is-today"{% endif %}>Thursday</th>
-        <th {% if today.weekday == 4 %}class="is-today"{% endif %}>Friday</th>
-        <th {% if today.weekday == 5 %}class="is-today"{% endif %}>Saturday</th>
-        <th {% if today.weekday == 6 %}class="is-today"{% endif %}>Sunday</th>
+        {% for day in weekdays %}
+          <th {% if today == day %}class="is-today"{% endif %}>{{ day|date:"D j/n" }}</th>
+        {% endfor %}
       </tr>
     </thead>
     <tbody id="table-body">
@@ -34,6 +30,7 @@
     // the table rows may change over time as there's ability to add and delete entries
 
     function sortBodyRows(){
+      if (todayColNum == -1) return;
       const rows = Array.from(tableBody.children);
       const lastRow = rows.pop();
       rows.sort((row1, row2) => {

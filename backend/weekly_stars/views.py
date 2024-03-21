@@ -24,9 +24,12 @@ class WeeklyStarsView(TemplateView):
         # TODO: Instead of relative weeks, consider using week numbers from the start of the year
         week = self.request.GET.get("week", 0)
         today = date.today()
-        context["today"] = today
         start_of_week = today - timedelta(days=today.weekday() + (7 * int(week)))
         end_of_week = start_of_week + timedelta(days=6)
+        weekdays = [start_of_week + timedelta(days=day) for day in range(7)]
+        context["weekdays"] = weekdays
+        if start_of_week <= today <= end_of_week:
+            context["today"] = today
 
         goals = RepeatableGoal.objects.filter(user=self.request.user).all()
         completions = (
@@ -45,8 +48,7 @@ class WeeklyStarsView(TemplateView):
 
         context["goals_with_completions"] = defaultdict(list)
         for goal in goals:
-            for day in range(7):
-                cdate = start_of_week + timedelta(days=day)
+            for cdate in weekdays:
                 is_completed = goal.pk in completions_by_goal and cdate in completions_by_goal[goal.pk]
                 context["goals_with_completions"][goal].append((cdate, is_completed))
 
