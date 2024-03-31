@@ -63,6 +63,12 @@ class WeeklyStarsView(TemplateView):
             return ["weekly_stars/hx_week_view.html"]
         return super().get_template_names()
 
+    def get(self, request, *args, **kwargs):
+        week = int(request.GET.get("week", 0))
+        if week < 0:
+            return HttpResponseRedirect(reverse("weekly_stars:weekly_stars"))
+        return super().get(request, *args, **kwargs)
+
 
 class LastThirtyStarsView(TemplateView):
     template_name = "weekly_stars/last_thirty_stars.html"

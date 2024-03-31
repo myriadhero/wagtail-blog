@@ -2,7 +2,8 @@
   <td>
     <button class="btn btn-outline-danger"
             hx-delete="{% url "weekly_stars:goal_edit_delete" goal.pk %}"
-            hx-target="closest tr">Delete</button>
+            hx-target="closest tr"
+            hx-confirm="Are you sure you want to delete goal {{ goal.name }}?">Delete</button>
   </td>
   <td>{{ goal.name }}</td>
   <td>{{ goal.complexity }}</td>
