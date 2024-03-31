@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="centered-content">
+        <table class="hover-column">
+            <thead>
+                <tr>
+                    <th></th>
+                    {% for goal in goals %}
+                        <th>
+                            <div>{{ goal.name }}</div>
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for cdate, completions in days_with_completions.items %}
+                    <tr>
+                        <td>
+                            <div>{{ cdate|date:"D j/n" }}</div>
+                        </td>
+                        {% for goal, completed in completions %}
+                            <td>{% include "weekly_stars/goal_completion.html" %}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <style>
+        .centered-content {
+            display: flex;
+            justify-content: center;
+        }
+        .star-outline {
+          font-size: 1.5em;
+          cursor: pointer;
+        }
+        .star-outline::before {
+          content: "☆";
+        }
+        .star-outline.star-filled::before {
+          content: "⭐️";
+        }
+        td, th{
+          padding: 0.5em;
+        }
+        table.table-hover tr:hover{
+          background-color: #0071d02b;
+        }
+        tbody tr{
+          transition: translate 0.5s ease-in-out;
+        }
+        .btn {
+          white-space: nowrap;
+        }
+        th>div {
+            rotate: 315deg;
+            width: 50px;
+            text-wrap: nowrap;
+        }
+        th {
+            height: 100px;
+            align-content: end;
+        }
+        table.hover-column {
+            overflow: hidden;
+        }
+        table.hover-column td {
+            position: relative;
+            text-align: center;
+        }
+        table.hover-column td:hover::after{
+            content: '';  
+            background-color: #0071d02b;
+            height: 10000px;    
+            left: 0;
+            position: absolute;  
+            top: -5000px;
+            width: 100%;
+            z-index: -100;      
+        }
+    </style>
+{% endblock content %}

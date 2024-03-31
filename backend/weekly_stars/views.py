@@ -58,6 +58,45 @@ class WeeklyStarsView(TemplateView):
         return context
 
 
+class LastThirtyStarsView(TemplateView):
+    template_name = "weekly_stars/last_thirty_stars.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        today = date.today()
+        thirty_days_ago = today - timedelta(days=30)
+        all_days = [today - timedelta(days=day) for day in range(30)]
+
+        goals = RepeatableGoal.objects.filter(user=self.request.user).all()
+        context["goals"] = goals
+
+        completions = (
+            DailyGoalCompletion.objects.filter(
+                goal__in=goals,
+                date__gte=thirty_days_ago,
+                date__lte=today,
+            )
+            .select_related("goal")
+            .all()
+        )
+
+        completions_by_goal = defaultdict(list)
+        for completion in completions:
+            completions_by_goal[completion.goal.pk].append(completion.date)
+
+        days_with_completions = defaultdict(list)
+        for cdate in all_days:
+            for goal in goals:
+                is_completed = goal.pk in completions_by_goal and cdate in completions_by_goal[goal.pk]
+                days_with_completions[cdate].append((goal, is_completed))
+
+        days_with_completions.default_factory = None
+        context["days_with_completions"] = days_with_completions
+
+        return context
+
+
 @method_decorator(login_required, name="dispatch")
 class GoalDetailView(DetailView):
     model = RepeatableGoal
@@ -155,7 +194,7 @@ class CompletionCreateDeleteView(View):
         completion, created = goal.completions.get_or_create(date=completion_date)
 
         if request.headers.get("HX-Request"):
-            return render(request, self.template, {"goal": goal, "completion": (completion_date, True)})
+            return render(request, self.template, {"goal": goal, "cdate": completion_date, "completed": True})
         return HttpResponseRedirect(reverse("weekly_stars:weekly_stars"))
 
     def delete(self, request, *args, **kwargs):
@@ -170,5 +209,5 @@ class CompletionCreateDeleteView(View):
             completion.delete()
 
         if request.headers.get("HX-Request"):
-            return render(request, self.template, {"goal": goal, "completion": (completion_date, False)})
+            return render(request, self.template, {"goal": goal, "cdate": completion_date, "completed": False})
         return HttpResponseRedirect(reverse("weekly_stars:weekly_stars"))

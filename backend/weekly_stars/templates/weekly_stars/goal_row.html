@@ -8,6 +8,6 @@
   <td>{{ goal.complexity }}</td>
   <td>{{ goal.frequency }}</td>
   {% for completion in completions %}
-    <td>{% include "weekly_stars/goal_completion.html" %}</td>
+    <td>{% include "weekly_stars/goal_completion.html" with cdate=completion.0 completed=completion.1 %}</td>
   {% endfor %}
 </tr>
