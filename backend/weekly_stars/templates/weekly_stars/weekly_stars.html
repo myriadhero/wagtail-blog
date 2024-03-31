@@ -1,24 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <table class="table-hover">
-    <thead>
-      <tr id="table-header-row">
-        <th></th>
-        <th>Repeatable</th>
-        <th>Rabbit/Elephant</th>
-        <th>Frequency</th>
-        {% for day in weekdays %}
-          <th {% if today == day %}class="is-today"{% endif %}>{{ day|date:"D j/n" }}</th>
-        {% endfor %}
-      </tr>
-    </thead>
-    <tbody id="table-body">
-      {% for goal, completions in goals_with_completions.items %}
-        {% include "weekly_stars/goal_row.html" %}
-      {% endfor %}
-      {% include "weekly_stars/table_entry_form.html" %}
-    </tbody>
-  </table>
+  {% include "weekly_stars/hx_week_view.html" %}
   <script>
     // i want to get the column number of the current day as per the is-today class
     const tableHeaderRow = document.getElementById("table-header-row");
@@ -55,6 +37,26 @@
   }
   .star-outline.star-filled::before {
     content: "⭐️";
+  }
+  .arrow-right, .arrow-left, .arrow-right-end {
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+  .arrow-right:hover, .arrow-left:hover, .arrow-right-end:hover{
+    color: gold;
+  }
+  .arrow-right::before {
+    content: "⇨";
+  }
+  .arrow-left::before {
+    content: "⇦";
+  }
+  .arrow-right-end::before {
+    content: "⇥";
+  }
+  .space-evenly {
+    display: flex;
+    justify-content: space-evenly;
   }
   td, th{
     padding: 0.5em;

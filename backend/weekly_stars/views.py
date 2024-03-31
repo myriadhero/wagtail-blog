@@ -22,7 +22,8 @@ class WeeklyStarsView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         # TODO: Instead of relative weeks, consider using week numbers from the start of the year
-        week = self.request.GET.get("week", 0)
+        week = int(self.request.GET.get("week", 0))
+        context["week"] = week
         today = date.today()
         start_of_week = today - timedelta(days=today.weekday() + (7 * int(week)))
         end_of_week = start_of_week + timedelta(days=6)
@@ -56,6 +57,11 @@ class WeeklyStarsView(TemplateView):
         context["goals_with_completions"].default_factory = None
 
         return context
+
+    def get_template_names(self) -> list[str]:
+        if self.request.headers.get("HX-Request"):
+            return ["weekly_stars/hx_week_view.html"]
+        return super().get_template_names()
 
 
 class LastThirtyStarsView(TemplateView):

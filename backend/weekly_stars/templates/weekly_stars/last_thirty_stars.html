@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="centered-content">
-        <table class="hover-column">
+        <table class="hover-column hover-row">
             <thead>
                 <tr>
                     <th></th>
@@ -59,25 +59,35 @@
             text-wrap: nowrap;
         }
         th {
+            {% comment %} TODO: somehow make the background work nice with sticky {% endcomment %}
             height: 100px;
             align-content: end;
+            position: sticky;
+            top: 0;
+        }
+        table {
+            position: relative;
         }
         table.hover-column {
-            overflow: hidden;
+            {% comment %} TODO: keep both sticky and column hover {% endcomment %}
+            {% comment %} overflow: hidden; {% endcomment %}
         }
         table.hover-column td {
             position: relative;
             text-align: center;
         }
-        table.hover-column td:hover::after{
+        table.hover-row tbody tr:hover{
+            background-color: #0071d02b;
+          }
+        {% comment %} table.hover-column td:not(:first-child):hover::after{
             content: '';  
             background-color: #0071d02b;
-            height: 10000px;    
+            height: 100vh;
             left: 0;
             position: absolute;  
-            top: -5000px;
+            top: -50vh; 
             width: 100%;
             z-index: -100;      
-        }
+} {% endcomment %}
     </style>
 {% endblock content %}
