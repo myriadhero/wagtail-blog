@@ -70,6 +70,7 @@ class WeeklyStarsView(TemplateView):
         return super().get(request, *args, **kwargs)
 
 
+@method_decorator(login_required, name="dispatch")
 class LastThirtyStarsView(TemplateView):
     template_name = "weekly_stars/last_thirty_stars.html"
 
@@ -127,6 +128,7 @@ class GoalDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         week = self.request.GET.get("week", 0)
+        context["week"] = week
         today = date.today()
         start_of_week = today - timedelta(days=today.weekday() + (7 * int(week)))
         end_of_week = start_of_week + timedelta(days=6)
@@ -153,7 +155,10 @@ class GoalCreateView(CreateView):
 
     def get_success_url(self):
         if self.request.headers.get("HX-Request"):
-            return self.object.get_absolute_url()
+            goal_url = self.object.get_absolute_url()
+            if week := self.request.POST.get("week"):
+                goal_url = f"{goal_url}?week={week}"
+            return goal_url
         return reverse("weekly_stars:weekly_stars")
 
     def get_template_names(self) -> list[str]:

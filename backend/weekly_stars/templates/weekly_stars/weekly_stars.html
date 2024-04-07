@@ -2,16 +2,16 @@
 {% block content %}
   {% include "weekly_stars/hx_week_view.html" %}
   <script>
-    // i want to get the column number of the current day as per the is-today class
-    const tableHeaderRow = document.getElementById("table-header-row");
-    // i don't anticipate this to change as the table is not dynamically polling backend
-    const todayColNum = Array.from(tableHeaderRow.children).findIndex((th) => th.classList.contains("is-today"));
     
-    // then i want to sort the rows by the value of that column
-    const tableBody = document.getElementById("table-body");
-    // the table rows may change over time as there's ability to add and delete entries
-
     function sortBodyRows(){
+      // i want to get the column number of the current day as per the is-today class
+      const tableHeaderRow = document.getElementById("table-header-row");
+      // i don't anticipate this to change as the table is not dynamically polling backend
+      const todayColNum = Array.from(tableHeaderRow.children).findIndex((th) => th.classList.contains("is-today"));
+      
+      // then i want to sort the rows by the value of that column
+      const tableBody = document.getElementById("table-body");
+      // the table rows may change over time as there's ability to add and delete entries
       if (todayColNum == -1) return;
       const rows = Array.from(tableBody.children);
       const lastRow = rows.pop();
